@@ -1,0 +1,2 @@
+*.log
+/spark-examples/docker/shared/log
