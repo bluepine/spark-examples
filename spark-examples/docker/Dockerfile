@@ -1,24 +1,16 @@
-FROM ubuntu:14.04
+FROM bluepine/bigdata-alpine-base
 
-RUN apt-get update && apt-get -y install curl
+MAINTAINER "Song Wei"
 
-# JAVA		 
-ARG JAVA_ARCHIVE=http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/server-jre-8u121-linux-x64.tar.gz
-ENV JAVA_HOME /usr/local/jdk1.8.0_121
-
-ENV PATH $PATH:$JAVA_HOME/bin
-RUN curl -sL --retry 3 --insecure \
-  --header "Cookie: oraclelicense=accept-securebackup-cookie;" $JAVA_ARCHIVE \
-  | tar -xz -C /usr/local/ && ln -s $JAVA_HOME /usr/local/java 
+ENV SPARK_HOME="/opt/spark" \
+    SPARK_VERSION="2.1.1-bin-hadoop2.7"
+ENV PATH="${SPARK_HOME}/bin:${PATH}"
 
 # SPARK
-ARG SPARK_ARCHIVE=http://d3kbcqa49mib13.cloudfront.net/spark-2.1.0-bin-hadoop2.7.tgz
-RUN curl -s $SPARK_ARCHIVE | tar -xz -C /usr/local/
+ARG SPARK_ARCHIVE=https://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}.tgz
+RUN curl -s $SPARK_ARCHIVE | tar -xz -C /opt && ln -sf /opt/spark-${SPARK_VERSION} $SPARK_HOME
 
-ENV SPARK_HOME /usr/local/spark-2.1.0-bin-hadoop2.7
-ENV PATH $PATH:$SPARK_HOME/bin
-
-COPY ha.conf $SPARK_HOME/conf
+# COPY ha.conf $SPARK_HOME/conf
 
 EXPOSE 4040 6066 7077 8080
 
