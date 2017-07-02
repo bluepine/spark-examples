@@ -1,21 +1,13 @@
-spark-master:
+version: '3'
+services:
+  spark-master:
+    build: .
     image: local/spark-2
     command: bash /shared/sh/start.sh
-    hostname: spark-master
     environment:
       MASTER: spark://spark-master:7077
       SPARK_CONF_DIR: /conf
       SPARK_PUBLIC_DNS: 127.0.0.1
-    expose:
-      - 7001
-      - 7002
-      - 7003
-      - 7004
-      - 7005
-      - 7006
-      - 7077
-      - 6066
-      - 18080
     ports:
       - 4040:4040
       - 6066:6066
@@ -26,10 +18,12 @@ spark-master:
       - ./conf/spark-master:/conf
       - ./data:/tmp/data
       - ./shared:/shared
-spark-worker-1:
+
+  spark-worker:
+    deploy:
+      replicas: 1
     image: local/spark-2
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
-    hostname: spark-worker-1
     environment:
       SPARK_CONF_DIR: /conf
       SPARK_PUBLIC_DNS: 127.0.0.1
@@ -37,19 +31,7 @@ spark-worker-1:
       SPARK_WORKER_MEMORY: 2g
       SPARK_WORKER_PORT: 8881
       SPARK_WORKER_WEBUI_PORT: 8081
-    links:
-      - spark-master
-    expose:
-      - 7012
-      - 7013
-      - 7014
-      - 7015
-      - 7016
-      - 8881
-    ports:
-      - 8081:8081
     volumes:
       - ./conf/spark-worker-1:/conf
       - ./data:/tmp/data
       - ./shared:/shared  
-
