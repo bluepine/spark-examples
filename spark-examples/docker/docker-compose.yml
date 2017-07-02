@@ -11,7 +11,6 @@ services:
     ports:
       - 4040:4040
       - 6066:6066
-      - 7077:7077
       - 8080:8080
       - 18080:18080
     volumes:
@@ -24,6 +23,8 @@ services:
       replicas: 1
     image: local/spark-2
     command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    depends_on:
+      - spark-master
     environment:
       SPARK_CONF_DIR: /conf
       SPARK_PUBLIC_DNS: 127.0.0.1
