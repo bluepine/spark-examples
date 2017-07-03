@@ -8,7 +8,7 @@ ENV PATH="${SPARK_HOME}/bin:${PATH}"
 
 # SPARK
 ARG SPARK_ARCHIVE=https://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}.tgz
-RUN curl -s $SPARK_ARCHIVE | tar -xz -C /opt && ln -sf /opt/spark-${SPARK_VERSION} $SPARK_HOME && apk update && apk add procps coreutils && sync
+RUN curl -s $SPARK_ARCHIVE | tar -xz -C /opt && ln -sf /opt/spark-${SPARK_VERSION} $SPARK_HOME && sync
 
 # COPY ha.conf $SPARK_HOME/conf
 
