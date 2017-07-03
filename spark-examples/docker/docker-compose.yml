@@ -3,7 +3,7 @@ services:
   spark-master:
     build: .
     image: local/spark-2
-    command: bash /shared/sh/start.sh
+    command: spark-class org.apache.spark.deploy.master.Master
     environment:
       MASTER: spark://spark-master:7077
       SPARK_CONF_DIR: /conf
@@ -22,7 +22,7 @@ services:
     deploy:
       replicas: 1
     image: local/spark-2
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    command: spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
     depends_on:
       - spark-master
     environment:
