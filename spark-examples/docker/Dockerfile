@@ -1,8 +1,8 @@
-FROM bluepine/bigdata-alpine-base
+FROM local/hadoop-2
 
 MAINTAINER "Song Wei"
 
-ENV SPARK_HOME="/opt/spark" \
+ENV SPARK_HOME=$HDFS_USER_CODE_DIR/spark \
     SPARK_VERSION="2.1.1-bin-hadoop2.7"
 ENV PATH="${SPARK_HOME}/bin:${PATH}"
 
