@@ -1,3 +1,4 @@
 #!/bin/bash
-#docker-compose stop
-docker stack rm spark
+. setup.sh
+#docker-compose down
+docker stack rm hadoop

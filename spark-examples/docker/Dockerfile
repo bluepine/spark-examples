@@ -2,19 +2,25 @@ FROM local/hadoop-2
 
 MAINTAINER "Song Wei"
 
-ENV SPARK_HOME=$USER_CODE/spark \
-    SPARK_VERSION="2.1.1-bin-hadoop2.7"
-ENV PATH="${SPARK_HOME}/bin:${PATH}"
+ENV HADOOP_VERSION=2.8.0 SPARK_VERSION="2.1.1-bin-hadoop2.7"
+ENV USER=hdfsuser
+ENV USER_HOME=/home/$USER
+ENV USER_CODE=/opt/usr \
+    USER_DATA=$USER_HOME/.data \
+    USER_CONF=$USER_HOME/.etc
+ENV HADOOP_HOME=$USER_CODE/hadoop-$HADOOP_VERSION \
+    SPARK_HOME=$USER_CODE/spark
+ENV HDFS_VOL1=$USER_DATA/hdfs1 \
+    HDFS_VOL2=$USER_DATA/hdfs2 \
+    HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
+    HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec \
+    PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOME/bin
 
-# SPARK
-ARG SPARK_ARCHIVE=https://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}.tgz
+### Copy
+COPY copy/bin/ $USER_CODE/util/bin/
+COPY copy/root/* /root/
+
+RUN sh /root/install/install.sh
+
+### User
 USER $USER
-RUN curl -s $SPARK_ARCHIVE | tar -xz -C $USER_CODE && ln -sf $USER_CODE/spark-${SPARK_VERSION} $SPARK_HOME && sync
-
-# COPY ha.conf $SPARK_HOME/conf
-
-# EXPOSE 4040 6066 7077 8080
-
-WORKDIR $SPARK_HOME
-
-
