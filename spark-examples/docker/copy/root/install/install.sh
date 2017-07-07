@@ -8,8 +8,8 @@ cp -r  /root/install/conf/hadoop/* $HADOOP_CONF_DIR/
 mkdir -p $HDFS_VOL1;
 mkdir -p $HDFS_VOL2;
 
-mkdir -p $SPARK_HOME/etc/
-cp -r  /root/install/conf/spark/* $SPARK_HOME/etc/
+mkdir -p $SPARK_CONF_DIR
+cp -r  /root/install/conf/spark/* $SPARK_CONF_DIR
 
 #assume all directories owned by $USER are inside $USER_HOME
 chown -R $USER:$USER $USER_HOME;

@@ -1,13 +1,13 @@
 version: '3'
 services:
   spark-master:
+    read_only: true
     build: .
     image: local/spark-2
     command: start-hadoop-namenode
     command: spark-class org.apache.spark.deploy.master.Master
     environment:
       MASTER: spark://spark-master:7077
-      SPARK_CONF_DIR: /conf
       SPARK_PUBLIC_DNS: 127.0.0.1
     ports:
       - 4040:4040
@@ -15,21 +15,24 @@ services:
       - 8080:8080
       - 18080:18080
     volumes:
-      - ./conf/spark-master:/conf
-      - ./data:/tmp/data
-      - ./shared:/shared
+      - "$HDFS_VOL1"
+      - "$HDFS_VOL2"
+      - ./volume:/mnt/volume:ro
 
   secondarynamenode:
+    read_only: true
     image: local/hadoop-2
     build: .
     links:
       - spark-master:namenode
     command: start-hadoop-secondarynamenode
-
+    volumes:
+      - "$HDFS_VOL1"
 
   spark-worker:
+    read_only: true
     deploy:
-      replicas: 1
+      replicas: 2
     image: local/spark-2
     command: start-hadoop-datanode
     command: spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
@@ -44,6 +47,4 @@ services:
       SPARK_WORKER_PORT: 8881
       SPARK_WORKER_WEBUI_PORT: 8081
     volumes:
-      - ./conf/spark-worker-1:/conf
-      - ./data:/tmp/data
-      - ./shared:/shared  
+      - "$HDFS_VOL1"
