@@ -16,10 +16,15 @@ ENV HDFS_VOL1=$USER_DATA/hdfs1 \
     HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec \
     PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOME/bin
 
+### Download
+COPY copy/root/download.sh /root/download.sh
+RUN sh /root/download.sh #avoid re-downloading stuff
+
 ### Copy
 COPY copy/bin/ $USER_CODE/util/bin/
-COPY copy/root /root
+COPY copy/root/install /root/install
 
+### Install
 RUN sh /root/install/install.sh
 
 ### User
