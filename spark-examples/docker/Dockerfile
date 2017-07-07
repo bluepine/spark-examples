@@ -1,4 +1,4 @@
-FROM local/hadoop-2
+FROM frolvlad/alpine-oraclejdk8:slim
 
 MAINTAINER "Song Wei"
 
@@ -18,7 +18,7 @@ ENV HDFS_VOL1=$USER_DATA/hdfs1 \
 
 ### Copy
 COPY copy/bin/ $USER_CODE/util/bin/
-COPY copy/root/* /root/
+COPY copy/root /root
 
 RUN sh /root/install/install.sh
 

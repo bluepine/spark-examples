@@ -1,4 +1,5 @@
 #!/bin/bash
+STACK=spark
 TAG=local/spark-2
 function extract_env {
     docker run --rm $TAG sh -c 'echo $'${1}

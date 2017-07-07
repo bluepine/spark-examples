@@ -18,6 +18,7 @@ mkdir -p $HDFS_VOL2;
 SPARK_ARCHIVE=https://d3kbcqa49mib13.cloudfront.net/spark-${SPARK_VERSION}.tgz
 mkdir -p $USER_CODE;
 curl -s $SPARK_ARCHIVE | tar -xz -C $USER_CODE && ln -sf $USER_CODE/spark-${SPARK_VERSION} $SPARK_HOME
+mkdir -p $SPARK_HOME/etc/
 cp -r  /root/install/conf/spark/* $SPARK_HOME/etc/
 
 #assume all directories owned by $USER are inside $USER_HOME
