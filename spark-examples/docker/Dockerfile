@@ -14,9 +14,8 @@ RUN sh /root/download.sh #avoid re-downloading stuff
 
 ### env
 ENV USER=hdfsuser
-ENV USER_HOME=/home/$USER \
-    USER_DATA=$USER_HOME/.data \
-    USER_CONF=$USER_HOME/.etc
+ENV USER_HOME=/home/$USER
+ENV USER_DATA=$USER_HOME/.data
 ENV HDFS_VOL1=$USER_DATA/hdfs1 \
     HDFS_VOL2=$USER_DATA/hdfs2 \
     HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
