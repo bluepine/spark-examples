@@ -4,11 +4,11 @@ services:
     read_only: true
     build: .
     image: local/spark-2
+    hostname: namenode
     command: start-hadoop-namenode
     command: spark-class org.apache.spark.deploy.master.Master
     environment:
       MASTER: spark://spark-master:7077
-      SPARK_PUBLIC_DNS: 127.0.0.1
     ports:
       - 4040:4040
       - 6066:6066
@@ -40,8 +40,6 @@ services:
       - spark-master:namenode
       - secondarynamenode
     environment:
-      SPARK_CONF_DIR: /conf
-      SPARK_PUBLIC_DNS: 127.0.0.1
       SPARK_WORKER_CORES: 2
       SPARK_WORKER_MEMORY: 2g
       SPARK_WORKER_PORT: 8881
