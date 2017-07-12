@@ -22,15 +22,15 @@ ENV HDFS_VOL1=$USER_DATA/hdfs1 \
     SPARK_CONF_DIR=$SPARK_HOME/etc/ \
     HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec \
     SPARK_PUBLIC_DNS=127.0.0.1 \
-    PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOME/bin
+    PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOME/bin:$USER_CODE/bin
 
 ### Copy
+COPY volume/install $USER_CODE/
 COPY copy/bin/ $USER_CODE/util/bin/
 COPY copy/root/install /root/install
-
 ### Install
 RUN sh /root/install/install.sh
 
 ### User
-#USER $USER
-USER root
+USER $USER
+#USER root
