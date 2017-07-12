@@ -1,0 +1,30 @@
+#!/bin/bash
+function check {
+    if [ $1 -ne 0 ]; then
+        echo "Failed to run $2: $1"
+        exit $1
+    fi
+}
+hostname=`hostname`
+syslogd -R fluentd:5140
+check $? fluentd
+
+start-hadoop-namenode | logger -t $hostname.namenode &
+check $? start-hadoop-namenode
+
+spark-class org.apache.spark.deploy.master.Master | logger -t $hostname.sparkmaster &
+check $? spark-master
+
+while /bin/true; do
+    # ps aux |grep my_first_process |grep -q -v grep
+    # PROCESS_1_STATUS=$?
+    # ps aux |grep my_second_process |grep -q -v grep
+    # PROCESS_2_STATUS=$?
+    # # If the greps above find anything, they will exit with 0 status
+    # # If they are not both 0, then something is wrong
+    # if [ $PROCESS_1_STATUS -ne 0 -o $PROCESS_2_STATUS -ne 0 ]; then
+    #     echo "One of the processes has already exited."
+    #     exit -1
+    # fi
+    sleep 60
+done

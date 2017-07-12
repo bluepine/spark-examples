@@ -32,4 +32,5 @@ COPY copy/root/install /root/install
 RUN sh /root/install/install.sh
 
 ### User
-USER $USER
+#USER $USER
+USER root

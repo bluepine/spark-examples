@@ -1,12 +1,21 @@
 version: '3'
 services:
+  fluentd:
+    read_only: true
+    image: fluent/fluentd
+    environment:
+      FLUENTD_CONF: stdout.conf
+    volumes:
+      - ./volume/fluentd_conf:/fluentd/etc:ro
+
   spark-master:
     read_only: true
     build: .
+    links:
+      - fluentd
     image: local/spark-2
     hostname: namenode
-    command: start-hadoop-namenode
-    command: spark-class org.apache.spark.deploy.master.Master
+    command: start-spark-master
     environment:
       MASTER: spark://spark-master:7077
     ports:
@@ -17,7 +26,7 @@ services:
     volumes:
       - "$HDFS_VOL1"
       - "$HDFS_VOL2"
-      - ./volume:/mnt/volume:ro
+      - ./volume/spark_input:/mnt/volume:ro
 
   secondarynamenode:
     read_only: true
@@ -25,6 +34,7 @@ services:
     build: .
     links:
       - spark-master:namenode
+      - fluentd
     command: start-hadoop-secondarynamenode
     volumes:
       - "$HDFS_VOL1"
@@ -34,9 +44,9 @@ services:
     deploy:
       replicas: 2
     image: local/spark-2
-    command: start-hadoop-datanode
-    command: spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    command: start-spark-worker
     links:
+      - fluentd
       - spark-master:namenode
       - secondarynamenode
     environment:
