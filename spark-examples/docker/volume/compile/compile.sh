@@ -10,6 +10,8 @@ tar xf fluent-bit-0.11.13.tar.gz
 cd fluent-bit-0.11.13
 apk update
 apk add make cmake
-rm -rf /root/install/*
-cmake -DCMAKE_INSTALL_PREFIX:PATH=/root/install . && make all install
+INSTALL_DIR=/root/install
+rm -rf $INSTALL_DIR/*
+cmake -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_DIR . && make all install
+rm -rf $INSTALL_DIR/include
 sync
