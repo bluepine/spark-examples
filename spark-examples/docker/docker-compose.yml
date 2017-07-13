@@ -8,13 +8,13 @@ services:
       - ./volume/conf/fluentd:/fluentd/etc:ro
 
   spark-master:
-    read_only: true
     build: .
     links:
       - fluentd
     image: local/spark-2
     hostname: namenode
-    command: start-spark-master
+    command: sleep 24h
+    #command: start-spark-master
     environment:
       MASTER: spark://spark-master:7077
     ports:
@@ -26,25 +26,25 @@ services:
       - "$HDFS_VOL1"
       - "$HDFS_VOL2"
       - "$USER_TMP"
-      - ./volume/code:"$USER_CODE_MNT":ro
+      - ./volume/code:$USER_CODE_MNT:ro
 
   secondarynamenode:
-    read_only: true
     image: local/hadoop-2
     build: .
     links:
       - spark-master:namenode
       - fluentd
-    command: start-hadoop-secondarynamenode
+    command: sleep 24h
+    #command: start-hadoop-secondarynamenode
     volumes:
       - "$HDFS_VOL1"
 
   spark-worker:
-    read_only: true
     deploy:
       replicas: 2
     image: local/spark-2
-    command: start-spark-worker
+    command: sleep 24h
+    #command: start-spark-worker
     links:
       - fluentd
       - spark-master:namenode

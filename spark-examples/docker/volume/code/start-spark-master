@@ -16,23 +16,20 @@ function check_running {
     fi
 }
 
+function collect_stdout {
+    #sed -e '/^$/d' |  jq -R . | sed -e 's/^/{"'"$1"'":/' -e 's/$/}/' | stdbuf -oL fluent-bit -f 10 -v -i stdin -o forward://fluentd:24224
+    logger --rfc5424 -n fluentd -P 5140 -t $1
+}
+
 hostname=`hostname`
-
-cd $USER_HOME/rw
-mkfifo hadoop
-mkfifo spark
-fluent-bit -d -i tail -p path=./hadoop -p path=./spark -o forward://fluentd:24224
-check_start $? fluent-bit
-
-start-hadoop-namenode > ./hadoop &
+start-hadoop-namenode 2>&1 | collect_stdout &
 check_start $? start-hadoop-namenode
 
-spark-class org.apache.spark.deploy.master.Master > ./spark &
+spark-class org.apache.spark.deploy.master.Master 2>&1 | collect_stdout &
 check_start $? spark-master
 
 while /bin/true; do
     sleep 60
-#    check_running fluent-bit
-    # check_running start-hadoop-namenode
-    # check_running org.apache.spark.deploy.master.Master
+    check_running start-hadoop-namenode
+    check_running org.apache.spark.deploy.master.Master
 done
