@@ -29,7 +29,7 @@ spark-class org.apache.spark.deploy.master.Master 2>&1 | collect_stdout spark-ma
 check_start $? spark-master
 set +o xtrace
 while /bin/true; do
-    sleep 1
+    sleep 60
     check_running start-hadoop-namenode
     check_running org.apache.spark.deploy.master.Master
 done

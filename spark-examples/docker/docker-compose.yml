@@ -13,8 +13,8 @@ services:
       - fluentd
     image: local/spark-2
     hostname: namenode
-    command: sleep 24h
-    #command: start-spark-master
+    #command: sleep 24h
+    command: start-spark-master
     environment:
       MASTER: spark://spark-master:7077
     ports:
@@ -34,8 +34,8 @@ services:
     links:
       - spark-master:namenode
       - fluentd
-    command: sleep 24h
-    #command: start-hadoop-secondarynamenode
+    #command: sleep 24h
+    command: start-hadoop-secondarynamenode
     volumes:
       - "$HDFS_VOL1"
 
@@ -43,8 +43,8 @@ services:
     deploy:
       replicas: 2
     image: local/spark-2
-    command: sleep 24h
-    #command: start-spark-worker
+    #command: sleep 24h
+    command: start-spark-worker
     links:
       - fluentd
       - spark-master:namenode
@@ -56,3 +56,4 @@ services:
       SPARK_WORKER_WEBUI_PORT: 8081
     volumes:
       - "$HDFS_VOL1"
+      - ./volume/code:$USER_CODE_MNT:ro
