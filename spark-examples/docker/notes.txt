@@ -1,0 +1,1 @@
+start-hadoop-namenode 2>&1 | jq -R . | sed -e 's/^/{"log":/' -e 's/$/}/' | fluent-bit -i stdin -o stdout

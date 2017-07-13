@@ -8,7 +8,7 @@ services:
       - ./volume/fluentd_conf:/fluentd/etc:ro
 
   spark-master:
-          #    read_only: true
+    read_only: true
     build: .
     links:
       - fluentd
@@ -25,10 +25,11 @@ services:
     volumes:
       - "$HDFS_VOL1"
       - "$HDFS_VOL2"
+      - "$USER_HOME/rw"
       - ./volume/spark_input:/mnt/volume:ro
 
   secondarynamenode:
-          #    read_only: true
+    read_only: true
     image: local/hadoop-2
     build: .
     links:
@@ -39,7 +40,7 @@ services:
       - "$HDFS_VOL1"
 
   spark-worker:
-          #    read_only: true
+    read_only: true
     deploy:
       replicas: 2
     image: local/spark-2

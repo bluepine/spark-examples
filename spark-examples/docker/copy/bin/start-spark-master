@@ -17,17 +17,22 @@ function check_running {
 }
 
 hostname=`hostname`
-syslogd -R fluentd:5140
-check_start $? syslogd
 
-start-hadoop-namenode | logger -t $hostname.namenode &
+cd $USER_HOME/rw
+mkfifo hadoop
+mkfifo spark
+fluent-bit -d -i tail -p path=./hadoop -p path=./spark -o forward://fluentd:24224
+check_start $? fluent-bit
+
+start-hadoop-namenode > ./hadoop &
 check_start $? start-hadoop-namenode
 
-spark-class org.apache.spark.deploy.master.Master | logger -t $hostname.sparkmaster &
+spark-class org.apache.spark.deploy.master.Master > ./spark &
 check_start $? spark-master
 
 while /bin/true; do
-    check_running start-hadoop-namenode
-    check_running org.apache.spark.deploy.master.Master
     sleep 60
+#    check_running fluent-bit
+    # check_running start-hadoop-namenode
+    # check_running org.apache.spark.deploy.master.Master
 done

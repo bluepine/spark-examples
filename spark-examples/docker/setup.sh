@@ -8,3 +8,4 @@ docker build -t $TAG --rm=true .
 bash ./clean_up_images.sh
 export HDFS_VOL1=`extract_env HDFS_VOL1`
 export HDFS_VOL2=`extract_env HDFS_VOL2`
+export USER_HOME=`extract_env USER_HOME`
