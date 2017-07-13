@@ -1,2 +1,3 @@
 *.log
 /spark-examples/docker/shared/log
+spark-examples/docker/volume/artifact/
