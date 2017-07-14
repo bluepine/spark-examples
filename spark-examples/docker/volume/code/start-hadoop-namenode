@@ -3,8 +3,8 @@ set -x
 
 # Format namenode
 if [ ! -f $HDFS_VOL1/name/current/VERSION ]; then
-    hdfs spark-master -format -force
+    hdfs namenode -format -force
 fi
 
 # start namenode process
-hdfs spark-master
+hdfs namenode
