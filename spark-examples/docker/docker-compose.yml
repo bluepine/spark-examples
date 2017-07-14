@@ -13,7 +13,7 @@ services:
     links:
       - fluentd
     image: local/spark-2
-    hostname: spark-master
+    #hostname: spark-master
     #command: sleep 24h
     command: start-spark-master
     environment:
