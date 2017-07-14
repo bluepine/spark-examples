@@ -13,7 +13,7 @@ services:
     links:
       - fluentd
     image: local/spark-2
-    hostname: namenode
+    hostname: spark-master
     #command: sleep 24h
     command: start-spark-master
     environment:
@@ -34,7 +34,7 @@ services:
     image: local/hadoop-2
     build: .
     links:
-      - spark-master:namenode
+      - spark-master
       - fluentd
     #command: sleep 24h
     command: start-hadoop-secondarynamenode
@@ -50,7 +50,7 @@ services:
     command: start-spark-worker
     links:
       - fluentd
-      - spark-master:namenode
+      - spark-master
       - secondarynamenode
     environment:
       SPARK_WORKER_CORES: 2

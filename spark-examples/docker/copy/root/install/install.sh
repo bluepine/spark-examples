@@ -10,7 +10,7 @@ mkdir -p $HDFS_VOL2;
 
 mkdir -p $SPARK_CONF_DIR
 cp -r  /root/install/conf/spark/* $SPARK_CONF_DIR
-mkdir $USER_HOME/rw
+mkdir $USER_TMP
 #assume all directories owned by $USER are inside $USER_HOME
 chown -R $USER:$USER $USER_HOME;
 sync

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -x
 # Wait for the name node to be online
-while ! nc -z namenode 50070; do
+while ! nc -z spark-master 50070; do
   sleep 2;
 done;
 

@@ -26,7 +26,7 @@ start-hadoop-datanode 2>&1 | collect_stdout datanode &
 spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077 2>&1 | collect_stdout spark-worker &
 set +o xtrace
 while /bin/true; do
-    sleep 60
+    sleep 60000
     check_running start-hadoop-datanode
     check_running org.apache.spark.deploy.worker.Worker
 done
