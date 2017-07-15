@@ -14,18 +14,25 @@ RUN sh /root/download.sh #avoid re-downloading stuff
 
 ### env
 ENV USER=hdfsuser
-ENV USER_HOME=/home/$USER
-ENV USER_DATA=$USER_HOME/.data
-ENV USER_CODE_MNT=$USER_CODE/.mnt
-ENV USER_TMP=$USER_HOME/tmp
-ENV HDFS_VOL1=$USER_DATA/hdfs1 \
+ENV USER_HOME=/home/$USER \
+    USER_DATA=$USER_HOME/.data \
+    USER_CONF=/opt/etc \
+    USER_CODE_MNT=$USER_CODE/.mnt \
+    USER_TMP=$USER_HOME/tmp
+
+#hadoop env
+ENV HADOOP_CONF_DIR=$USER_CONF/hadoop \
+    HDFS_VOL1=$USER_DATA/hdfs1 \
     HDFS_VOL2=$USER_DATA/hdfs2 \
-    HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop \
-    SPARK_CONF_DIR=$SPARK_HOME/etc/ \
-    HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec \
+    HADOOP_LIBEXEC_DIR=$HADOOP_HOME/libexec
+
+#spark env
+ENV SPARK_CONF_DIR=$USER_CONF/spark \
     SPARK_PUBLIC_DNS=127.0.0.1 \
-    PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOME/bin:$USER_CODE_MNT:$USER_CODE/bin
-ENV SPARK_WORKER_DIR=$USER_TMP/spark-work
+    SPARK_WORKER_DIR=$USER_TMP/spark-work \
+    SPARK_LOCAL_DIRS=$USER_TMP/spark-tmp
+    
+ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOME/bin:$USER_CODE_MNT:$USER_CODE/bin
 
 ### Copy
 #COPY volume/artifact $USER_CODE/

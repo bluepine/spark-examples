@@ -28,10 +28,11 @@ services:
       - "$HDFS_VOL2"
       - "$USER_TMP"
       - ./volume/code:$USER_CODE_MNT:ro
+      - ./volume/conf/
 
   secondarynamenode:
     read_only: true
-    image: local/hadoop-2
+    image: local/spark-2
     build: .
     links:
       - spark-master
