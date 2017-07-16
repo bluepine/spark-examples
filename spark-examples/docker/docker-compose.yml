@@ -10,11 +10,10 @@ services:
   spark-master:
     read_only: true
     build: .
-    links:
+    depends_on:
       - fluentd
     image: local/spark-2
-    #hostname: spark-master
-    #command: sleep 24h
+    hostname: spark-master #tricky: this settings is necessary for docker swarm mode if the hostname "spark-master" is used in hadoop conf file for hdfs namenode. the reason is that the service name in docker swarm mode resolves to a forwarding address which is different from the address of any service instances. hence if a service instance needs to resolve said service name to itself we need to set hostname for it explicitly here.
     command: start-spark-master
     environment:
       MASTER: spark://spark-master:7077
@@ -24,34 +23,33 @@ services:
       - 8080:8080
       - 18080:18080
     volumes:
-      - "$HDFS_VOL1"
-      - "$HDFS_VOL2"
-      - "$USER_TMP"
       - ./volume/code:$USER_CODE_MNT:ro
       - ./volume/conf/hadoop:$HADOOP_CONF_DIR:ro
       - ./volume/conf/spark:$SPARK_CONF_DIR:ro
+      - "$HDFS_VOL1"
+      - "$HDFS_VOL2"
+      - "$USER_TMP"
 
   secondarynamenode:
     read_only: true
     image: local/spark-2
     build: .
-    links:
+    depends_on:
       - spark-master
       - fluentd
-    #command: sleep 24h
     command: start-hadoop-secondarynamenode
     volumes:
-      - "$HDFS_VOL1"
+      - ./volume/code:$USER_CODE_MNT:ro
       - ./volume/conf/hadoop:$HADOOP_CONF_DIR:ro
+      - "$HDFS_VOL1"
 
   spark-worker:
     read_only: true
     deploy:
       replicas: 2
     image: local/spark-2
-    #command: sleep 24h
     command: start-spark-worker
-    links:
+    depends_on:
       - fluentd
       - spark-master
       - secondarynamenode
@@ -61,8 +59,8 @@ services:
       SPARK_WORKER_PORT: 8881
       SPARK_WORKER_WEBUI_PORT: 8081
     volumes:
-      - "$HDFS_VOL1"
-      - "$USER_TMP"
       - ./volume/code:$USER_CODE_MNT:ro
       - ./volume/conf/hadoop:$HADOOP_CONF_DIR:ro
       - ./volume/conf/spark:$SPARK_CONF_DIR:ro
+      - "$HDFS_VOL1"
+      - "$USER_TMP"
