@@ -6,6 +6,7 @@ check_start $? start-hadoop-namenode
 
 spark-class org.apache.spark.deploy.master.Master 2>&1 | collect_stdout spark-master &
 check_start $? spark-master
+
 set +o xtrace
 while /bin/true; do
     sleep 600000

@@ -1,6 +1,7 @@
 #!/bin/sh
+set -x
 #download script used when building docker image. use at most one.
-apk add --no-cache curl netcat-openbsd bash jq coreutils util-linux
+apk add --no-cache curl netcat-openbsd bash jq coreutils util-linux procps
 mkdir -p "${HADOOP_HOME}";
 export ARCHIVE=hadoop-$HADOOP_VERSION.tar.gz;
 export DOWNLOAD_PATH=apache/hadoop/common/hadoop-$HADOOP_VERSION/$ARCHIVE;

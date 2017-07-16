@@ -10,7 +10,7 @@ ENV HADOOP_HOME=$USER_CODE/hadoop-$HADOOP_VERSION \
 
 ### Download
 COPY copy/root/download.sh /root/download.sh
-RUN sh /root/download.sh #avoid re-downloading stuff
+RUN sh /root/download.sh #edit this line when you need to invalidate cache for this command
 
 ### env
 ENV USER=hdfsuser
@@ -38,7 +38,7 @@ ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOM
 #COPY volume/artifact $USER_CODE/
 COPY copy/root/install /root/install
 ### Install
-RUN sh /root/install/install.sh
+RUN sh /root/install/install.sh #edit this line when you need to invalidate cache for this command
 
 ### User
 USER $USER
