@@ -14,8 +14,8 @@ RUN sh /root/download.sh #avoid re-downloading stuff
 
 ### env
 ENV USER=hdfsuser
-ENV USER_HOME=/home/$USER \
-    USER_DATA=$USER_HOME/.data \
+ENV USER_HOME=/home/$USER
+ENV USER_DATA=$USER_HOME/.data \
     USER_CONF=/opt/etc \
     USER_CODE_MNT=$USER_CODE/.mnt \
     USER_TMP=$USER_HOME/tmp
