@@ -17,7 +17,7 @@ function check_running {
 }
 
 function collect_stdout {
-    #sed -e '/^$/d' |  jq -R . | sed -e 's/^/{"'"$1"'":/' -e 's/$/}/' | stdbuf -oL fluent-bit -f 10 -v -i stdin -o forward://fluentd:24224
-    #    logger --rfc5424 -n fluentd -P 5140 -t $1
-    cat
+    #sed -e '/^$/d' |  jq -R . | sed -e 's/^/{"'"$1"'":/' -e 's/$/}/' | stdbuf -oL fluent-bit -f 10 -v -i stdin -o forward://fluentd:24224 #segmentation fault...
+    logger --rfc5424 -n fluentd -P 5140 -t $1
+    #cat
 }
