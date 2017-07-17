@@ -1,8 +1,10 @@
 <configuration>
-
   <property>
     <name>hive.exec.scratchdir</name>
     <value>/home/${user.name}/tmp/hive</value>
   </property>
-
+  <property>
+    <name>hive.exec.local.scratchdir</name>
+    <value>/home/${user.name}/tmp/hive_local</value>
+  </property>
 </configuration>
