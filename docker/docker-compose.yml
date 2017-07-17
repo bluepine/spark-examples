@@ -18,10 +18,9 @@ services:
     environment:
       MASTER: spark://spark-master:7077
     ports:
-      - 4040:4040
-      - 6066:6066
-      - 8080:8080
-      - 18080:18080
+      - 8080:8080 #spark jobs web ui
+      - 18080:18080 #spark history web ui
+      - 50070:50070 #hdfs namenode web ui
     volumes:
       - ./volume/code:$USER_CODE_MNT:ro
       - ./volume/conf/hadoop:$HADOOP_CONF_DIR:ro
