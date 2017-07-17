@@ -46,3 +46,5 @@ RUN sh /root/install/install.sh #edit this line when you need to invalidate cach
 ### User
 USER $USER
 #USER root
+
+WORKDIR $USER_TMP
