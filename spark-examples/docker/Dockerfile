@@ -31,9 +31,9 @@ ENV SPARK_CONF_DIR=$USER_CONF/spark \
     SPARK_PUBLIC_DNS=127.0.0.1 \
     SPARK_WORKER_DIR=$USER_TMP/spark-work \
     SPARK_LOCAL_DIRS=$USER_TMP/spark-tmp
-    
-ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOME/bin:$USER_CODE_MNT:$USER_CODE/bin
 
+ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$USER_CODE/util/bin:$SPARK_HOME/bin:$USER_CODE_MNT:$USER_CODE/bin
+ENV LD_LIBRARY_PATH=$HADOOP_HOME/lib/native
 ### Copy
 #COPY volume/artifact $USER_CODE/
 COPY copy/root/install /root/install
