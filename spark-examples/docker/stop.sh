@@ -1,4 +1,4 @@
 #!/bin/bash
-. setup.sh
+. build.sh
 #docker-compose down
 docker stack rm $STACK
