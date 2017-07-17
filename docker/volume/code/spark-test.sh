@@ -1,6 +1,5 @@
 #!/bin/bash
 hadoop fs -mkdir -p /eventLogging
-hadoop fs -mkdir -p /historyEventLogging
 bash $SPARK_HOME/sbin/start-history-server.sh
 hadoop fs -put $USER_CODE_MNT/data /data
 hadoop fs -mkdir /code

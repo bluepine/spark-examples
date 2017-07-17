@@ -21,3 +21,8 @@ function collect_stdout {
     logger --rfc5424 -n fluentd -P 5140 -t $1
     #cat
 }
+
+while ! nc -z -u fluentd 5140; do
+    echo "fluentd syslogd service is not ready. waiting..."
+	  sleep 2;
+done;
