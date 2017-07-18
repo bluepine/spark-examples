@@ -18,8 +18,8 @@ services:
     environment:
       MASTER: spark://spark-master:7077
     ports:
-      - 4040:4040
-      - 8080:8080 #spark jobs web ui
+      - 4040:4040 #spark application web ui
+      - 8080:8080 #spark master web ui
       - 18080:18080 #spark history web ui
       - 50070:50070 #hdfs namenode web ui
     volumes:
