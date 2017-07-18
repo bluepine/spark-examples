@@ -6,6 +6,19 @@ check_start $? start-hadoop-namenode
 spark-class org.apache.spark.deploy.master.Master 2>&1 | collect_stdout spark-master &
 check_start $? spark-master
 
+while ! nc -z localhost 50070; do
+    echo "waiting for hdfs initialization to complete"
+    sleep 2;
+done;
+
+while ! nc -z localhost 8080; do
+    echo "waiting for spark master initialization to complete"
+	  sleep 2;
+done;
+
+hadoop fs -mkdir -p /eventLogging
+bash $SPARK_HOME/sbin/start-history-server.sh
+
 set +o xtrace
 while /bin/true; do
     sleep 600000
